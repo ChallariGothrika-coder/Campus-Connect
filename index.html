@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CampusConnect — a smart campus companion for announcements, timetables, events, lost and found, and campus locations." />
+  <title>CampusConnect — Smart Campus Companion</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top navigation bar -->
+  <header class="topbar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a class="logo" href="#dashboard" data-section="dashboard" aria-label="CampusConnect home">
+      <span class="logo-mark">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="26" height="26" rx="7" fill="#1e40af" />
+          <path d="M9 12h14M9 16h10M9 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+          <circle cx="24" cy="20" r="3" fill="#60a5fa" />
+        </svg>
+      </span>
+      <span class="logo-text">CampusConnect</span>
+    </a>
+
+    <div class="topbar-search">
+      <label class="sr-only" for="globalSearch">Search campus content</label>
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+        <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <input type="search" id="globalSearch" placeholder="Search announcements, events, items, locations…" autocomplete="off" />
+      <button type="button" class="clear-search" id="clearGlobalSearch" aria-label="Clear search" hidden>×</button>
+    </div>
+
+    <div class="profile-area">
+      <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+        <span class="avatar" aria-hidden="true">CC</span>
+        <span class="profile-name">Student</span>
+      </button>
+      <div class="profile-menu" id="profileMenu" hidden>
+        <p class="profile-menu-title">Local demo profile</p>
+        <button type="button" class="profile-menu-item" id="resetDataBtn">Reset demonstration data</button>
+        <button type="button" class="profile-menu-item" id="exportDataBtn">View stored data (console)</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav aria-label="Primary navigation" class="side-nav">
+        <button class="nav-item active" data-section="dashboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-section="timetable">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Timetable</span>
+        </button>
+        <button class="nav-item" data-section="announcements">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v10H7l-3 3V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <span>Announcements</span>
+        </button>
+        <button class="nav-item" data-section="events">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Events</span>
+        </button>
+        <button class="nav-item" data-section="lostfound">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Lost &amp; Found</span>
+        </button>
+        <button class="nav-item" data-section="campus">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <span>Campus Guide</span>
+        </button>
+        <button class="nav-item" data-section="about">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>About</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="muted small">Demonstration data only</p>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+    <main class="main-content">
+      <!-- DASHBOARD -->
+      <section id="section-dashboard" class="page active" aria-labelledby="dashboard-title">
+        <div class="page-header">
+          <h1 id="dashboard-title">Welcome to CampusConnect!</h1>
+          <p class="subtitle">Everything you need for your campus life.</p>
+        </div>
+
+        <div class="summary-grid" id="summaryGrid"></div>
+
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2>Latest announcements</h2>
+              <button class="link-btn" data-section="announcements">View all</button>
+            </div>
+            <div id="dashboardAnnouncements" class="list-stack"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Upcoming events</h2>
+              <button class="link-btn" data-section="events">View all</button>
+            </div>
+            <div id="dashboardEvents" class="list-stack"></div>
+          </div>
+        </div>
+
+        <div class="card quick-actions">
+          <h2>Quick actions</h2>
+          <div class="quick-actions-grid">
+            <button class="action-btn" data-section="timetable">
+              <span class="action-icon">📅</span>
+              <span>View timetable</span>
+            </button>
+            <button class="action-btn" data-section="lostfound">
+              <span class="action-icon">📢</span>
+              <span>Report a lost item</span>
+            </button>
+            <button class="action-btn" data-section="campus">
+              <span class="action-icon">🗺️</span>
+              <span>Explore campus locations</span>
+            </button>
+            <button class="action-btn" data-section="events">
+              <span class="action-icon">🎟️</span>
+              <span>Register for an event</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIMETABLE -->
+      <section id="section-timetable" class="page" aria-labelledby="timetable-title">
+        <div class="page-header">
+          <h1 id="timetable-title">Class Timetable</h1>
+          <p class="subtitle">Sample schedule. Replace it with your actual college timetable.</p>
+        </div>
+        <div class="day-tabs" id="dayTabs" role="tablist"></div>
+        <div class="card">
+          <div id="timetableContent"></div>
+        </div>
+        <p class="hint muted small">All timetable entries are sample data until you enter your own.</p>
+      </section>
+
+      <!-- ANNOUNCEMENTS -->
+      <section id="section-announcements" class="page" aria-labelledby="announcements-title">
+        <div class="page-header">
+          <h1 id="announcements-title">Announcements</h1>
+          <p class="subtitle">Campus notices and updates. Sample data shown for demonstration.</p>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" id="annSearch" placeholder="Search announcements…" />
+          </div>
+          <select id="annCategory" aria-label="Filter by category">
+            <option value="all">All categories</option>
+            <option value="Academics">Academics</option>
+            <option value="Examinations">Examinations</option>
+            <option value="Events">Events</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+        <div id="announcementsList" class="card-grid"></div>
+      </section>
+
+      <!-- EVENTS -->
+      <section id="section-events" class="page" aria-labelledby="events-title">
+        <div class="page-header">
+          <h1 id="events-title">Campus Events</h1>
+          <p class="subtitle">Local demonstration registration. Not an official college registration system.</p>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" id="evtSearch" placeholder="Search events…" />
+          </div>
+          <select id="evtCategory" aria-label="Filter events by category">
+            <option value="all">All categories</option>
+            <option value="Technical">Technical</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Sports">Sports</option>
+            <option value="Workshops">Workshops</option>
+          </select>
+        </div>
+        <div id="eventsList" class="card-grid"></div>
+      </section>
+
+      <!-- LOST & FOUND -->
+      <section id="section-lostfound" class="page" aria-labelledby="lf-title">
+        <div class="page-header">
+          <h1 id="lf-title">Lost &amp; Found</h1>
+          <p class="subtitle">Report and browse lost or found items. User posts are saved in this browser only.</p>
+        </div>
+
+        <div class="card form-card">
+          <h2>Report an item</h2>
+          <form id="lfForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="lfType">Post type <span class="required">*</span></label>
+                <select id="lfType" required>
+                  <option value="">Select type…</option>
+                  <option value="lost">Lost item</option>
+                  <option value="found">Found item</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="lfCategory">Category <span class="required">*</span></label>
+                <select id="lfCategory" required>
+                  <option value="">Select category…</option>
+                  <option>Electronics</option>
+                  <option>Clothing</option>
+                  <option>IDs / Documents</option>
+                  <option>Keys</option>
+                  <option>Books</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lfName">Item name <span class="required">*</span></label>
+              <input type="text" id="lfName" placeholder="e.g. Black wallet" required maxlength="80" />
+            </div>
+            <div class="form-group">
+              <label for="lfDesc">Description <span class="required">*</span></label>
+              <textarea id="lfDesc" rows="3" placeholder="Colour, brand, identifying marks…" required maxlength="400"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="lfLocation">Location <span class="required">*</span></label>
+                <input type="text" id="lfLocation" placeholder="e.g. Library entrance" required maxlength="100" />
+              </div>
+              <div class="form-group">
+                <label for="lfDate">Date <span class="required">*</span></label>
+                <input type="date" id="lfDate" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lfContact">Contact <span class="required">*</span></label>
+              <input type="text" id="lfContact" placeholder="Email or phone number" required maxlength="120" />
+              <small class="field-hint">Use a college email or student number. Avoid sharing sensitive personal details.</small>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Add post</button>
+              <button type="reset" class="btn btn-ghost">Clear form</button>
+            </div>
+            <p class="form-error" id="lfError" role="alert" hidden></p>
+            <p class="form-success" id="lfSuccess" role="status" hidden></p>
+          </form>
+        </div>
+
+        <div class="toolbar" style="margin-top:1.25rem;">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" id="lfSearch" placeholder="Search items…" />
+          </div>
+          <select id="lfTypeFilter" aria-label="Filter by type">
+            <option value="all">All posts</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+          </select>
+          <select id="lfCategoryFilter" aria-label="Filter by category">
+            <option value="all">All categories</option>
+            <option>Electronics</option>
+            <option>Clothing</option>
+            <option>IDs / Documents</option>
+            <option>Keys</option>
+            <option>Books</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div id="lfList" class="card-grid"></div>
+      </section>
+
+      <!-- CAMPUS GUIDE -->
+      <section id="section-campus" class="page" aria-labelledby="campus-title">
+        <div class="page-header">
+          <h1 id="campus-title">Campus Guide</h1>
+          <p class="subtitle">A directory of common campus locations. Coordinates are not included in this demo.</p>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" id="campusSearch" placeholder="Search locations…" />
+          </div>
+          <select id="campusCategory" aria-label="Filter locations">
+            <option value="all">All areas</option>
+            <option value="Academic">Academic</option>
+            <option value="Administrative">Administrative</option>
+            <option value="Services">Services</option>
+            <option value="Recreation">Recreation</option>
+          </select>
+        </div>
+        <div id="campusList" class="card-grid"></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="section-about" class="page" aria-labelledby="about-title">
+        <div class="page-header">
+          <h1 id="about-title">About CampusConnect</h1>
+          <p class="subtitle">A smart campus companion for students.</p>
+        </div>
+        <div class="card prose">
+          <h2>What is CampusConnect?</h2>
+          <p>CampusConnect is a student-friendly website that brings campus announcements, class timetables, college events, lost-and-found notices, and campus locations into one place.</p>
+
+          <h2>Problems it aims to solve</h2>
+          <ul>
+            <li>Information scattered across notice boards, emails, and messaging groups.</li>
+            <li>Students missing important announcements or events.</li>
+            <li>Difficulty finding campus locations for new students.</li>
+            <li>No single, quick place to report lost or found items.</li>
+          </ul>
+
+          <h2>Key features</h2>
+          <ul>
+            <li>Dashboard with summary cards and quick actions.</li>
+            <li>Interactive weekly timetable view.</li>
+            <li>Filterable announcements with categories and priorities.</li>
+            <li>Events with local registration interest and duplicate prevention.</li>
+            <li>Lost &amp; Found with browser-stored user posts.</li>
+            <li>Campus directory of common locations.</li>
+            <li>Global search across all content.</li>
+          </ul>
+
+          <h2>Technologies used</h2>
+          <p>HTML5, CSS3, and Vanilla JavaScript. Data is stored in the browser using localStorage. No backend or paid services are required for this version.</p>
+
+          <h2>Future improvements</h2>
+          <ul>
+            <li>Official college authentication and student accounts.</li>
+            <li>A shared database so data is consistent across users and devices.</li>
+            <li>Administrator controls for posting official announcements.</li>
+            <li>Real campus maps with verified location coordinates.</li>
+            <li>Push notifications for important notices.</li>
+          </ul>
+
+          <h2>Data and limitations</h2>
+          <p>All announcements, events, timetable entries, and sample lost-and-found posts are demonstration data. User-created lost-and-found posts are saved only in this browser and are not shared with other users or devices. Registration for events is a local demonstration feature, not an official college registration system.</p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h2>Reset demonstration data</h2>
+          <p class="muted">This clears user-created lost-and-found posts and event registrations stored in this browser. Sample data remains available.</p>
+          <button class="btn btn-danger" id="resetDataBtn2">Reset demonstration data</button>
+        </div>
+      </section>
+
+      <!-- SEARCH RESULTS -->
+      <section id="section-search" class="page" aria-labelledby="search-title">
+        <div class="page-header">
+          <h1 id="search-title">Search results</h1>
+          <p class="subtitle" id="searchSubtitle">Type in the top search bar to find campus content.</p>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p><strong>CampusConnect</strong> — Smart Campus Companion. Initial version uses demonstration data and stores user data locally in the browser.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
